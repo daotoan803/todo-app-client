@@ -12,8 +12,6 @@ const LoginPages = ({ login, showSuccessMessage }) => {
     e.preventDefault();
     const error = await login(username, password);
     if (!error) {
-      setUsername('');
-      setPassword('');
       showSuccessMessage('Login success !');
       navigate('/');
       return;

@@ -2,6 +2,20 @@ import Cookies from 'js-cookie';
 
 const authentication = (() => {
   let token = Cookies.get('token') ?? null;
+
+  const sendAuthenticatedRequest = async (url, method = 'GET', data = {}) => {
+    method = method.toUpperCase();
+    const response = await fetch(url, {
+      method,
+      headers: {
+        authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+      ...(() => (method !== 'GET' ? { body: JSON.stringify(data) } : {}))(),
+    });
+    return response;
+  };
+
   const login = async (username, password) => {
     const response = await fetch('/api/users/login', {
       method: 'POST',
@@ -13,22 +27,17 @@ const authentication = (() => {
     const data = await response.json();
     if (response.status === 200) {
       Cookies.set('token', data.accessToken, { expires: 360 });
-      Cookies.set('hello', 'ehlllo');
       token = data.accessToken;
     }
     return { statusCode: response.status, error: data.error ?? null };
   };
 
   const checkLoggedIn = async () => {
-    console.log(token);
     if (!token) return false;
-    const response = await fetch('/api/users/verifyToken', {
-      method: 'POST',
-      headers: {
-        authorization: 'Bearer ' + token,
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await sendAuthenticatedRequest(
+      '/api/users/verifyToken',
+      'POST'
+    );
 
     if (response.status === 200) return true;
     Cookies.remove('token');
@@ -37,11 +46,11 @@ const authentication = (() => {
 
   const logout = () => {
     if (!token) return;
-    token = null;
     Cookies.remove('token');
+    token = null;
   };
 
-  return { login, checkLoggedIn, logout };
+  return { login, checkLoggedIn, logout, sendAuthenticatedRequest };
 })();
 
 export default authentication;

@@ -5,6 +5,7 @@ import SignupPage from './pages/SignupPage';
 import React, { useEffect, useState } from 'react';
 import SuccessAlert from './components/alert/SuccessAlert';
 import authentication from './apis/Authentication';
+import HomePages from './pages/HomePages';
 
 function App() {
   const [successMessage, setSuccessMessage] = useState('');
@@ -12,7 +13,6 @@ function App() {
 
   useEffect(() => {
     authentication.checkLoggedIn().then((loggedIn) => {
-      console.log('login : ' + loggedIn);
       setIsLoggedIn(loggedIn);
     });
   }, []);
@@ -52,7 +52,7 @@ function App() {
         <Route
           path="/"
           exact
-          element={isLoggedIn ? <h1>Hello world</h1> : <Navigate to="/login" />}
+          element={isLoggedIn ? <HomePages /> : <Navigate to="/login" />}
         />
         <Route
           path="/login"
