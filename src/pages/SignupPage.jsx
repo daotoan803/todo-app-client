@@ -1,8 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import LabelInput from '../components/form/LabelInput';
 import { useNavigate } from 'react-router-dom';
+import user from './../apis/User';
 
-const SignupPage = (props) => {
+const SignupPage = ({ showSuccessMessage }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
@@ -12,8 +13,9 @@ const SignupPage = (props) => {
     password: false,
     repeatPassword: false,
   });
-
   const navigate = useNavigate();
+  const minFieldLength = 3;
+  const maxFieldLength = 20;
 
   const clearError = () => {
     setErrors({
@@ -28,14 +30,20 @@ const SignupPage = (props) => {
     e.preventDefault();
 
     let err = false;
-    if (username.trim().length < 6 || username.trim().length > 20) {
+    if (
+      username.trim().length < minFieldLength ||
+      username.trim().length > maxFieldLength
+    ) {
       setErrors((prev) => ({
         ...prev,
         username: true,
       }));
       err = true;
     }
-    if (password.trim().length < 6 || password.trim().length > 20) {
+    if (
+      password.trim().length < minFieldLength ||
+      password.trim().length > maxFieldLength
+    ) {
       setErrors((prev) => ({
         ...prev,
         password: true,
@@ -56,16 +64,13 @@ const SignupPage = (props) => {
   };
 
   const signup = async () => {
-    const response = await fetch('/api/users/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    });
+    const response = await user.signup(username, password);
 
     if (response.status === 200) {
       setUsername('');
       setPassword('');
       setRepeatPassword('');
+      showSuccessMessage('Signup success !');
       navigate('/login');
       return;
     }
@@ -75,15 +80,15 @@ const SignupPage = (props) => {
   };
 
   const onUsernameChange = (e) => {
-    setUsername(e.target.value);
+    setUsername(e.target.value.trim());
     clearError();
   };
   const onPasswordChange = (e) => {
-    setPassword(e.target.value);
+    setPassword(e.target.value.trim());
     clearError();
   };
   const onRepeatPasswordChange = (e) => {
-    setRepeatPassword(e.target.value);
+    setRepeatPassword(e.target.value.trim());
     clearError();
   };
 
@@ -101,7 +106,7 @@ const SignupPage = (props) => {
             placeholder="Username"
           />
           <div className={`form-text ${errors.username ? 'text-danger' : ''}`}>
-            Username must be 6-20 characters long
+            Username must be {minFieldLength}-{maxFieldLength} characters long
           </div>
         </div>
         <div className="mb-3">
@@ -115,7 +120,7 @@ const SignupPage = (props) => {
             placeholder="Password"
           />
           <div className={`form-text ${errors.password ? 'text-danger' : ''}`}>
-            Password must be 6-20 characters long
+            Password must be {minFieldLength}-{maxFieldLength} characters long
           </div>
         </div>
         <div className="mb-3">

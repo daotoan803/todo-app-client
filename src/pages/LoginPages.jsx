@@ -1,44 +1,63 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import LabelInput from './../components/form/LabelInput';
 
-const LoginPages = (props) => {
+const LoginPages = ({ login, showSuccessMessage }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState(false);
+  const navigate = useNavigate();
+
+  const submit = async (e) => {
+    e.preventDefault();
+    const error = await login(username, password);
+    if (!error) {
+      setUsername('');
+      setPassword('');
+      showSuccessMessage('Login success !');
+      navigate('/');
+      return;
+    }
+
+    setLoginError(true);
+  };
+
+  const onUsernameChange = (e) => {
+    setUsername(e.target.value.trim());
+    setLoginError(false);
+  };
+
+  const onPasswordChange = (e) => {
+    setPassword(e.target.value.trim());
+    setLoginError(false);
+  };
 
   return (
     <div className="container mt-4">
-      <form>
+      <form onSubmit={submit}>
         <div className="mb-3">
-          <label htmlFor="exampleInputEmail1" className="form-label">
-            Username
-          </label>
-          <input
-            required
+          <LabelInput
+            label="Username"
             type="text"
-            className="form-control"
-            id="exampleInputEmail1"
+            required={true}
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={onUsernameChange}
+            placeholder="Username"
           />
-          <div id="emailHelp" className="form-text">
-            Username must be 6-20 characters long
-          </div>
         </div>
         <div className="mb-3">
-          <label htmlFor="exampleInputPassword1" className="form-label">
-            Password
-          </label>
-          <input
-            required
+          <LabelInput
+            label="Password"
             type="password"
-            className="form-control"
-            id="exampleInputPassword1"
+            required={true}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={onPasswordChange}
+            placeholder="Password"
           />
-          <div id="passwordHelp" className="form-text">
-            Password must be 6-20 characters long
-          </div>
         </div>
+        <p className="text-danger h6" hidden={!loginError}>
+          Incorrect username or password
+        </p>
         <button type="submit" className="btn btn-primary">
           Login
         </button>
