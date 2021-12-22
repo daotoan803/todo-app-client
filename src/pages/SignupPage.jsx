@@ -65,9 +65,9 @@ const SignupPage = ({ showSuccessMessage }) => {
   };
 
   const signup = async () => {
-    const response = await user.signup(username, password);
+    const error = await user.signup(username, password);
 
-    if (response.status === 200) {
+    if (!error) {
       setUsername('');
       setPassword('');
       setRepeatPassword('');
@@ -76,8 +76,7 @@ const SignupPage = ({ showSuccessMessage }) => {
       return;
     }
 
-    const data = await response.json();
-    setSubmitError(data.error);
+    setSubmitError(error);
   };
 
   const onUsernameChange = (e) => {

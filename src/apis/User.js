@@ -5,14 +5,14 @@ const user = (() => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
     });
-
-    return response;
-  }
-
+    if (response.status === 200) return null;
+    const data = await response.json();
+    return data.error;
+  };
 
   return {
-    signup
-  }
-})()
+    signup,
+  };
+})();
 
 export default user;
