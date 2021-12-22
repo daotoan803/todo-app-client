@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import LoadingIcons from '../../icons/LoadingIcons';
 
-const TaskCardOption = ({ id, deleteTask }) => {
+const TaskCardOption = ({ id, deleteTask, toggleEditing }) => {
   const [deleting, setDeleting] = useState(false);
   const onDeleteClick = async () => {
     setDeleting(true);
@@ -10,7 +10,7 @@ const TaskCardOption = ({ id, deleteTask }) => {
 
   return (
     <div className="col-1 d-flex flex-column align-items-center">
-      <button className="btn btn-success my-1">
+      <button className="btn btn-success my-1" onClick={toggleEditing}>
         <i className="fas fa-edit" />
       </button>
       {!deleting && (

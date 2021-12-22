@@ -1,17 +1,28 @@
 import React, { useState } from 'react';
 import LoadingIcons from '../../icons/LoadingIcons';
 
-const TaskCardHeader = ({ id, title, important, editTask, finished }) => {
+const TaskCardHeader = ({
+  id,
+  title,
+  important,
+  editTask,
+  finished,
+  editing,
+  titleEdit,
+  setTitleEdit,
+  saveEdit,
+}) => {
   const [loading, setLoading] = useState(false);
+
   const setTaskImportant = async () => {
     setLoading(true);
     await editTask(id, { important: true });
-    if(finished) setLoading(false);
+    if (finished) setLoading(false);
   };
   const setTaskNotImportant = async () => {
     setLoading(true);
     await editTask(id, { important: false });
-    if(finished) setLoading(false);
+    if (finished) setLoading(false);
   };
 
   return (
@@ -32,11 +43,21 @@ const TaskCardHeader = ({ id, title, important, editTask, finished }) => {
           />
         )}
         {loading && <LoadingIcons />}
-        <p className="h4 m-0 d-inline text-white mx-1">{title}</p>
+        {!editing && <p className="h4 m-0 d-inline text-white mx-1">{title}</p>}
+        {editing && (
+          <input
+            className="form-control"
+            type="text"
+            value={titleEdit}
+            onChange={(e) => setTitleEdit(e.target.value)}
+          />
+        )}
       </div>
-      <p className="col-4 d-flex justify-content-end align-items-center text-white h5 m-0">
-        TODAY
-      </p>
+      {editing && (
+        <div className="col d-flex justify-content-end" onClick={saveEdit}>
+          <button className="btn btn-success">Save</button>
+        </div>
+      )}
     </div>
   );
 };

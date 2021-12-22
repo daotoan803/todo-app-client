@@ -5,6 +5,7 @@ const YOpen = ({ children, className }) => {
   const animate = useSpring({
     from: { opacity: 0, height: 0, overflow: 'hidden' },
     to: { opacity: 1, height: 'auto' },
+    config: { duration: 500 },
   });
 
   return (

@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import LoadingIcons from './../../icons/LoadingIcons';
 
-const TaskCardBody = ({ id, detail, finished, editTask }) => {
+const TaskCardBody = ({
+  id,
+  detail,
+  finished,
+  editTask,
+  editing,
+  detailEdit,
+  setDetailEdit,
+}) => {
   const [loading, setLoading] = useState(false);
 
   const setTaskUnfinished = async () => {
@@ -35,7 +43,14 @@ const TaskCardBody = ({ id, detail, finished, editTask }) => {
         {loading && <LoadingIcons />}
       </div>
       <div className="col-10">
-        <p>{detail}</p>
+        {!editing && <p>{detail}</p>}
+        {editing && (
+          <textarea
+            className="form-control"
+            value={detailEdit}
+            onChange={(e) => setDetailEdit(e.target.value)}
+          />
+        )}
       </div>
     </>
   );

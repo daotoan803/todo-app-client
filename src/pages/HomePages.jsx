@@ -28,7 +28,7 @@ const HomePages = ({ showSuccessMessage, showDangerMessage }) => {
       const tempTaskList = taskList.slice();
       tempTaskList.forEach((task) => {
         if (task.id === id) {
-          task.title = title?.trim() ? task : task.title;
+          task.title = title?.trim() ? title : task.title;
           task.detail = detail?.trim() ? detail : task.detail;
           task.finished = finished ?? task.finished;
           task.important = important ?? task.important;
