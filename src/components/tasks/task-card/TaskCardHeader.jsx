@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import LoadingIcons from '../../icons/LoadingIcons';
 
-const TaskCardHeader = ({ id, title, important, editTask }) => {
+const TaskCardHeader = ({ id, title, important, editTask, finished }) => {
   const [loading, setLoading] = useState(false);
   const setTaskImportant = async () => {
     setLoading(true);
     await editTask(id, { important: true });
-    setLoading(false);
+    if(finished) setLoading(false);
   };
   const setTaskNotImportant = async () => {
     setLoading(true);
     await editTask(id, { important: false });
-    setLoading(false);
+    if(finished) setLoading(false);
   };
 
   return (

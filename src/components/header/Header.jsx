@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 
 const Header = ({ isLoggedIn, logout }) => {
   return (
-    <header className="sticky-top row bg-dark justify-content-center">
+    <header
+      className="sticky-top row bg-dark justify-content-center"
+      style={{ zIndex: 100 }}>
       <div className="col-5 my-2">
         <Link to="/" className=" text-white h2 text-decoration-none">
           TODO APP

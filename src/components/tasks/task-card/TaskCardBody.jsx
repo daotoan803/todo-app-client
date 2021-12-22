@@ -7,13 +7,11 @@ const TaskCardBody = ({ id, detail, finished, editTask }) => {
   const setTaskUnfinished = async () => {
     setLoading(true);
     await editTask(id, { finished: false });
-    setLoading(false);
   };
 
   const setTaskFinished = async () => {
     setLoading(true);
     await editTask(id, { finished: true });
-    setLoading(false);
   };
 
   return (

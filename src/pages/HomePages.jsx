@@ -3,7 +3,7 @@ import taskApi from './../apis/Task';
 import TaskForm from './../components/form/task-form/TaskForm';
 import TaskListContainer from '../components/tasks/TaskListContainer';
 import YOpen from './../components/transition/YOpen';
-import styled from 'styled-components';
+import FlyIn from './../components/transition/FlyIn';
 
 const HomePages = ({ showSuccessMessage, showDangerMessage }) => {
   const [taskList, setTaskList] = useState([]);
@@ -78,71 +78,64 @@ const HomePages = ({ showSuccessMessage, showDangerMessage }) => {
 
   return (
     <>
-      <button
-        className="btn btn-primary rounded-0 mt-4"
-        onClick={openAddTaskForm}>
-        {openTaskForm ? 'Cancel' : 'Add task'}
-      </button>
-      {/* {openTaskForm && (
-      )} */}
-      <YOpen inProp={openTaskForm}>
-        <div className="container bg-dark mt-0 p-4">
-          <TaskForm addTask={addTask} />
-        </div>
-      </YOpen>
-      <TaskListContainer
-        tasks={importantTasks}
-        editTask={editTask}
-        deleteTask={deleteTask}
-        title="Important task"
-        placeholder="You don't have any important tasks!"
-        className="mt-4"
-      />
-
-      <button
-        className="btn btn-primary mt-3 mb-0"
-        onClick={() => {
-          setShowFinishedTask((prev) => !prev);
-        }}>
-        {!showFinishedTask ? 'Show finished tasks' : 'Show tasks'}
-      </button>
-
-      <YOpen inProp={!showFinishedTask}>
+      <FlyIn>
+        <button
+          className="btn btn-primary rounded-0 mt-4"
+          onClick={openAddTaskForm}>
+          {openTaskForm ? 'Cancel' : 'Add task'}
+        </button>
+        {openTaskForm && (
+          <YOpen>
+            <div className="container bg-dark mt-0 p-4">
+              <TaskForm addTask={addTask} />
+            </div>
+          </YOpen>
+        )}
         <TaskListContainer
-          tasks={normalTasks}
+          tasks={importantTasks}
           editTask={editTask}
           deleteTask={deleteTask}
-          title="Other tasks"
-          placeholder="You don't have any tasks here!"
-          className="mt-0"
+          title="Important task"
+          placeholder="You don't have any important tasks!"
+          className="mt-4"
         />
-      </YOpen>
 
-      <YOpen inProp={showFinishedTask}>
-        <div className="position-relative">
-          <GrayOut />
-          <TaskListContainer
-            tasks={finishedTask}
-            editTask={editTask}
-            deleteTask={deleteTask}
-            title="Finished tasks"
-            placeholder="You haven't finished any tasks yet!"
-            className="mt-0"
-          />
-        </div>
-      </YOpen>
+        <button
+          className="btn btn-primary mt-3 mb-0"
+          onClick={() => {
+            setShowFinishedTask((prev) => !prev);
+          }}>
+          {!showFinishedTask ? 'Show finished tasks' : 'Show tasks'}
+        </button>
+
+        {!showFinishedTask && (
+          <FlyIn>
+            <TaskListContainer
+              tasks={normalTasks}
+              editTask={editTask}
+              deleteTask={deleteTask}
+              title="Other tasks"
+              placeholder="You don't have any tasks here!"
+              className="mt-0"
+            />
+          </FlyIn>
+        )}
+
+        {showFinishedTask && (
+          <FlyIn>
+            <TaskListContainer
+              tasks={finishedTask}
+              editTask={editTask}
+              deleteTask={deleteTask}
+              title="Finished tasks"
+              placeholder="You haven't finished any tasks yet!"
+              className="mt-0"
+            />
+          </FlyIn>
+        )}
+      </FlyIn>
     </>
   );
 };
 
 export default HomePages;
-
-const GrayOut = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 100;
-  background-color: rgba(206, 206, 206, 0.5);
-`;

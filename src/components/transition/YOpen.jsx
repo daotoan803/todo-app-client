@@ -1,36 +1,16 @@
 import React from 'react';
-import { Transition } from 'react-transition-group';
+import { useSpring, animated } from 'react-spring';
 
-const YOpen = ({ children, inProp }) => {
-  //transition
-  const duration = 300;
-
-  const defaultStyle = {
-    transition: `${duration}ms ease-out`,
-    opacity: 0,
-    height: 0,
-    overflow: 'hidden',
-  };
-
-  const transitionStyles = {
-    entering: { height: 0, opacity: 0 },
-    entered: { height: 'auto', opacity: 1 },
-    exiting: { height: 'auto', opacity: 1 },
-    exited: { height: 0, opacity: 0 },
-  };
+const YOpen = ({ children, className }) => {
+  const animate = useSpring({
+    from: { opacity: 0, height: 0, overflow: 'hidden' },
+    to: { opacity: 1, height: 'auto' },
+  });
 
   return (
-    <Transition in={inProp} timeout={duration}>
-      {(state) => (
-        <div
-          style={{
-            ...defaultStyle,
-            ...transitionStyles[state],
-          }}>
-          {children}
-        </div>
-      )}
-    </Transition>
+    <animated.div style={animate} className={className}>
+      {children}
+    </animated.div>
   );
 };
 

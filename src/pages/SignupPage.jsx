@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import LabelInput from '../components/form/LabelInput';
 import { useNavigate } from 'react-router-dom';
 import user from './../apis/User';
+import FlyIn from '../components/transition/FlyIn';
 
 const SignupPage = ({ showSuccessMessage }) => {
   const [username, setUsername] = useState('');
@@ -93,58 +94,62 @@ const SignupPage = ({ showSuccessMessage }) => {
   };
 
   return (
-    <div className="container mt-4">
-      <form onSubmit={submit}>
-        <div className="mb-3">
-          <LabelInput
-            label="Username"
-            type="text"
-            required={true}
-            value={username}
-            error={errors.username}
-            onChange={onUsernameChange}
-            placeholder="Username"
-          />
-          <div className={`form-text ${errors.username ? 'text-danger' : ''}`}>
-            Username must be {minFieldLength}-{maxFieldLength} characters long
+    <FlyIn from="right">
+      <div className="container mt-4">
+        <form onSubmit={submit}>
+          <div className="mb-3">
+            <LabelInput
+              label="Username"
+              type="text"
+              required={true}
+              value={username}
+              error={errors.username}
+              onChange={onUsernameChange}
+              placeholder="Username"
+            />
+            <div
+              className={`form-text ${errors.username ? 'text-danger' : ''}`}>
+              Username must be {minFieldLength}-{maxFieldLength} characters long
+            </div>
           </div>
-        </div>
-        <div className="mb-3">
-          <LabelInput
-            label="Password"
-            type="password"
-            required={true}
-            value={password}
-            error={errors.password}
-            onChange={onPasswordChange}
-            placeholder="Password"
-          />
-          <div className={`form-text ${errors.password ? 'text-danger' : ''}`}>
-            Password must be {minFieldLength}-{maxFieldLength} characters long
+          <div className="mb-3">
+            <LabelInput
+              label="Password"
+              type="password"
+              required={true}
+              value={password}
+              error={errors.password}
+              onChange={onPasswordChange}
+              placeholder="Password"
+            />
+            <div
+              className={`form-text ${errors.password ? 'text-danger' : ''}`}>
+              Password must be {minFieldLength}-{maxFieldLength} characters long
+            </div>
           </div>
-        </div>
-        <div className="mb-3">
-          <LabelInput
-            label="Repeat Password"
-            type="password"
-            required={true}
-            value={repeatPassword}
-            error={errors.repeatPassword}
-            onChange={onRepeatPasswordChange}
-            placeholder="repeatPassword"
-          />
-          <div
-            className="form-text text-danger"
-            hidden={!errors.repeatPassword}>
-            repeat password not match
+          <div className="mb-3">
+            <LabelInput
+              label="Repeat Password"
+              type="password"
+              required={true}
+              value={repeatPassword}
+              error={errors.repeatPassword}
+              onChange={onRepeatPasswordChange}
+              placeholder="repeatPassword"
+            />
+            <div
+              className="form-text text-danger"
+              hidden={!errors.repeatPassword}>
+              repeat password not match
+            </div>
           </div>
-        </div>
-        <div className="text-danger h5">{submitError}</div>
-        <button type="submit" className="btn btn-primary">
-          Signup
-        </button>
-      </form>
-    </div>
+          <div className="text-danger h5">{submitError}</div>
+          <button type="submit" className="btn btn-primary">
+            Signup
+          </button>
+        </form>
+      </div>
+    </FlyIn>
   );
 };
 
