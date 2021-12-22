@@ -6,9 +6,11 @@ import React, { useEffect, useState } from 'react';
 import SuccessAlert from './components/alert/SuccessAlert';
 import authentication from './apis/Authentication';
 import HomePages from './pages/HomePages';
+import DangerAlert from './components/alert/DangerAlert';
 
 function App() {
   const [successMessage, setSuccessMessage] = useState('');
+  const [dangerMessage, setDangerMessage] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -19,7 +21,12 @@ function App() {
 
   const showSuccessMessage = (message) => {
     setSuccessMessage(message);
-    setTimeout(() => setSuccessMessage(''), 3000);
+    setTimeout(() => setSuccessMessage(''), 2000);
+  };
+
+  const showDangerMessage = (message) => {
+    setDangerMessage(message);
+    setTimeout(() => setDangerMessage(''), 2000);
   };
 
   const login = async (username, password) => {
@@ -45,39 +52,51 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="App pb-5">
       {successMessage && <SuccessAlert message={successMessage} />}
+      {dangerMessage && <DangerAlert message={dangerMessage} />}
       <Header isLoggedIn={isLoggedIn} logout={logout} />
-      <Routes>
-        <Route
-          path="/"
-          exact
-          element={isLoggedIn ? <HomePages /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/login"
-          element={
-            !isLoggedIn ? (
-              <LoginPages
-                showSuccessMessage={showSuccessMessage}
-                login={login}
-              />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            !isLoggedIn ? (
-              <SignupPage showSuccessMessage={showSuccessMessage} />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-      </Routes>
+      <main className="container">
+        <Routes>
+          <Route
+            path="/"
+            exact
+            element={
+              isLoggedIn ? (
+                <HomePages
+                  showSuccessMessage={showSuccessMessage}
+                  showDangerMessage={showDangerMessage}
+                />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              !isLoggedIn ? (
+                <LoginPages
+                  showSuccessMessage={showSuccessMessage}
+                  login={login}
+                />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              !isLoggedIn ? (
+                <SignupPage showSuccessMessage={showSuccessMessage} />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+        </Routes>
+      </main>
     </div>
   );
 }

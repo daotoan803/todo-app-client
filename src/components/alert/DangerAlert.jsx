@@ -1,15 +1,15 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-const SuccessAlert = ({ message }) => {
+const DangerAlert = ({ message }) => {
   return (
     <ALertContainer>
-      <p className="h5">{message} 🎉</p>
+      <p className="h5">{message} 💀</p>
     </ALertContainer>
   );
 };
 
-export default SuccessAlert;
+export default DangerAlert;
 
 const popout = keyframes`
   0% {
@@ -18,7 +18,7 @@ const popout = keyframes`
 `;
 
 const ALertContainer = styled.div`
-  background-color: var(--bs-success);
+  background-color: var(--bs-danger);
   position: fixed;
   top: 20px;
   left: 0;
